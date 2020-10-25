@@ -39,11 +39,11 @@ public class VendingMachineView {
 	}
 	
 	public void displayArticleList(List<Article> articleList) {
-		for(Article currentArticle : articleList) {
-			String articleInfo = String.format("%s\n%s\n%s\n\n", 
-					currentArticle.getName(),
-					currentArticle.getCost(),
-					currentArticle.getInventory());
+		for(int i=0 ; i<articleList.size() ; i++) {
+			String articleInfo = String.format(ArticleCode.values()[i]+"\n%s\n%s\n%s\n\n", 
+					articleList.get(i).getName(),
+					articleList.get(i).getCost(),
+					articleList.get(i).getInventory());
 			io.print(articleInfo);
 		}
 	}
@@ -61,7 +61,7 @@ public class VendingMachineView {
 			io.print(article.getName());
 			io.print(article.getCost());
 			io.print(article.getInventory());
-			String name = dao.removeUnit(article);
+			String name = dao.removeUnit(article); // gotta fix this
 			returnBoughtArticle(name);
 		}else {
 			io.print("No such article...");
@@ -72,7 +72,13 @@ public class VendingMachineView {
 	public void returnBoughtArticle(String name) {// removeUnit as input // goes inside controller.boughtArticle
 		io.print("You bought "+name);
 	}
+	
 	public void displayExitBanner() {
 		io.print("Thanks for buying!!! Good bye...");
+	}
+	
+	public void displayErrorMessage(String errorMsg) {
+		io.print("=== ERROR ===");
+		io.print(errorMsg);
 	}
 }

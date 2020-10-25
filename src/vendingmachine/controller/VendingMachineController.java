@@ -6,6 +6,7 @@ package vendingmachine.controller;
 import java.math.BigDecimal;
 
 import vendingmachine.dao.VendingMachineDao;
+import vendingmachine.dao.VendingMachineDaoException;
 import vendingmachine.dao.VendingMachineDaoFileImpl;
 import vendingmachine.dto.Article;
 import vendingmachine.service.ArticleCode;
@@ -33,38 +34,41 @@ public class VendingMachineController {
 		boolean keepGoing = true;
 		BigDecimal putMoney = new BigDecimal("0");
 		String articleSelected = null;
-		
-		while(keepGoing) {
-			
-			listArticles(); // unmarshall and then list
-			
-			putMoney = getMoney();
-			
-			buyArticle();
-			
-			if(true) { // if money put is enough
+		try {
+			while(keepGoing) {
 				
-				// subtract unit from inventory
+				listArticles(); // unmarshall and then list
 				
-				// give change back
-				io.print("Here is your change..."); // To be created in ServiceLayer
+				putMoney = getMoney();
+				
+				buyArticle();
+				
+				if(true) { // if money put is enough
+					
+					// subtract unit from inventory
+					
+					// give change back
+					io.print("Here is your change..."); // gotta get rid of this somehow
+				}
+				keepGoing = io.readBoolean("Would you like to keep buying?yes/no: "); //later to be added to ServiceLayer
 			}
-			keepGoing = io.readBoolean("Would you like to keep buying?yes/no: "); //later to be added to ServiceLayer
+			exitMessage();
+		}catch(VendingMachineDaoException e) {
+			view.displayErrorMessage(e.getMessage());
 		}
-		exitMessage();
 	}
 	
 	private BigDecimal getMoney(){
 		return view.printMenuAndGetMoney();
 	}
 	
-	private void listArticles() {
+	private void listArticles() throws VendingMachineDaoException{
 		view.vmBanner();
 		List<Article> articleList = dao.getAllArticles();
 		view.displayArticleList(articleList);
 	}
 	
-	private void buyArticle() {
+	private void buyArticle() throws VendingMachineDaoException{
 		view.articleChosenBanner();
 		ArticleCode code = view.getArticleCode();
 		Article article = dao.getArticle(code);

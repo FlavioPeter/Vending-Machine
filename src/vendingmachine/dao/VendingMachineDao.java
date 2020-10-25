@@ -20,7 +20,7 @@ public interface VendingMachineDao {
 	 * 
 	 * @return List<Article> 
 	 */
-	List<Article> getAllArticles();
+	List<Article> getAllArticles() throws VendingMachineDaoException;
 	
 	/**
 	 * Returns the article object associated with given name of the article
@@ -30,7 +30,7 @@ public interface VendingMachineDao {
 	 * @return the article object associated with the respective code attributed to it,
 	 * null if the code isn't assigned to any product
 	 */
-	Article getArticle(ArticleCode code);
+	Article getArticle(ArticleCode code) throws VendingMachineDaoException;
 	
 	/**
 	 * Removes 1 unit from inventory for the purchased article
@@ -38,5 +38,5 @@ public interface VendingMachineDao {
 	 * @param code
 	 * @return name of the article that had a unit removed
 	 */
-	String removeUnit(Article article);
+	String removeUnit(ArticleCode code) throws VendingMachineDaoException;
 }
