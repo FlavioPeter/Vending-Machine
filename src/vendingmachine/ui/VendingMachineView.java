@@ -9,7 +9,7 @@ import java.util.List;
 import vendingmachine.dao.VendingMachineDao;
 import vendingmachine.dao.VendingMachineDaoFileImpl;
 import vendingmachine.dto.Article;
-import vendingmachine.service.ArticleCode;
+import vendingmachine.dao.ArticleCode;
 
 /**
  * @author Flavio Silva

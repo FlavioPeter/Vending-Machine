@@ -5,11 +5,10 @@ package vendingmachine.controller;
 
 import java.math.BigDecimal;
 
-import vendingmachine.dao.VendingMachineDao;
-import vendingmachine.dao.VendingMachineDaoException;
-import vendingmachine.dao.VendingMachineDaoFileImpl;
+import vendingmachine.dao.VendingMachinePersistenceException;
+import vendingmachine.service.VendingMachineServiceLayer;
 import vendingmachine.dto.Article;
-import vendingmachine.service.ArticleCode;
+import vendingmachine.dao.ArticleCode;
 import vendingmachine.ui.UserIO;
 import vendingmachine.ui.UserIOConsoleImpl;
 import vendingmachine.ui.VendingMachineView;
@@ -22,11 +21,11 @@ import java.util.List;
 public class VendingMachineController {
 	
 	private VendingMachineView view;
-	private VendingMachineDao dao;
+	private VendingMachineServiceLayer service;
 	private UserIO io = new UserIOConsoleImpl(); //get rid of this somehow
 	
-	public VendingMachineController(VendingMachineDao dao, VendingMachineView view) {
-		this.dao = dao;
+	public VendingMachineController(VendingMachineServiceLayer service, VendingMachineView view) {
+		this.service = service;
 		this.view = view;
 	}
 	
@@ -53,7 +52,7 @@ public class VendingMachineController {
 				keepGoing = io.readBoolean("Would you like to keep buying?yes/no: "); //later to be added to ServiceLayer
 			}
 			exitMessage();
-		}catch(VendingMachineDaoException e) {
+		}catch(VendingMachinePersistenceException e) {
 			view.displayErrorMessage(e.getMessage());
 		}
 	}
@@ -62,16 +61,16 @@ public class VendingMachineController {
 		return view.printMenuAndGetMoney();
 	}
 	
-	private void listArticles() throws VendingMachineDaoException{
+	private void listArticles() throws VendingMachinePersistenceException{
 		view.vmBanner();
-		List<Article> articleList = dao.getAllArticles();
+		List<Article> articleList = service.getAllArticles();
 		view.displayArticleList(articleList);
 	}
 	
-	private void buyArticle() throws VendingMachineDaoException{
+	private void buyArticle() throws VendingMachinePersistenceException{
 		view.articleChosenBanner();
 		ArticleCode code = view.getArticleCode();
-		Article article = dao.getArticle(code);
+		Article article = service.getArticle(code);
 		view.boughtArticle(article);
 	}
 	

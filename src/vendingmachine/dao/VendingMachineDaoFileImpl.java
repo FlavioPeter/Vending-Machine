@@ -17,7 +17,6 @@ import java.util.Scanner;
 import java.util.TreeMap;
 
 import vendingmachine.dto.Article;
-import vendingmachine.service.ArticleCode;
 
 /**
  * @author Flavio Silva
@@ -57,7 +56,7 @@ public class VendingMachineDaoFileImpl implements VendingMachineDao {
 		return new Article(name, cost, inventory);
 	}
 	
-	private void loadArticle() throws VendingMachineDaoException{
+	private void loadArticle() throws VendingMachinePersistenceException{
 		Scanner scanner;
 		ArticleCode[] codeArray = ArticleCode.values(); // code to be used as key for selecting and article
 		int i = 0; // index of the code to be assigned to article of each line read
@@ -66,7 +65,7 @@ public class VendingMachineDaoFileImpl implements VendingMachineDao {
 			// Create scanner for reading the file
 			scanner = new Scanner(new BufferedReader(new FileReader(INVENTORY_FILE)));
 		}catch(FileNotFoundException e){
-			throw new VendingMachineDaoException("-_- Could not load article into memory.", e);
+			throw new VendingMachinePersistenceException("-_- Could not load article into memory.", e);
 		}
 		// currentLine holds the most recent line read from the file
 		String currentLine;
@@ -111,12 +110,12 @@ public class VendingMachineDaoFileImpl implements VendingMachineDao {
 		return articleAsText;
 	}
 	
-	private void writeArticle(Map<ArticleCode, Article> articles) throws VendingMachineDaoException, IOException {
+	private void writeArticle(Map<ArticleCode, Article> articles) throws VendingMachinePersistenceException, IOException {
 		PrintWriter scanner;
 		try {
 			scanner = new PrintWriter(new FileWriter(INVENTORY_FILE));
 		}catch(FileNotFoundException e) {
-			throw new VendingMachineDaoException("-_- Could not load article data into memory.", e);
+			throw new VendingMachinePersistenceException("-_- Could not load article data into memory.", e);
 		}
 		for(Map.Entry<ArticleCode, Article> thisArticle : articles.entrySet()) {
 			scanner.println(marshallArticle(thisArticle.getValue()));
@@ -125,23 +124,27 @@ public class VendingMachineDaoFileImpl implements VendingMachineDao {
 	}
 	
 	@Override
-	public List<Article> getAllArticles() throws VendingMachineDaoException{
+	public List<Article> getAllArticles() throws VendingMachinePersistenceException{
 		loadArticle();
 		return new ArrayList<Article>(articles.values());
 	}
 	
 	@Override
-	public Article getArticle(ArticleCode code) throws VendingMachineDaoException{
+	public Article getArticle(ArticleCode code) throws VendingMachinePersistenceException{
 		loadArticle();
 		return articles.get(code);
 	}
 	
 	@Override
-	public String removeUnit(ArticleCode code) throws VendingMachineDaoException{ // goes inside controller.boughtArticle
+	public Article removeUnit(ArticleCode code) throws VendingMachinePersistenceException{ // goes inside controller.boughtArticle
 		loadArticle();
 		Article subtractedArticle = articles.get(code);
 		subtractedArticle.inventorySubtract();
-		writeArticle(articles);
-		return subtractedArticle.getName();
+		try {
+			writeArticle(articles);
+		}catch(IOException e) {
+			throw new VendingMachinePersistenceException("-_- Could not load article data into memory.", e);
+		}
+		return subtractedArticle;
 	}
 }

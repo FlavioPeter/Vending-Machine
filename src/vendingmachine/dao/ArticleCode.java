@@ -1,7 +1,7 @@
 /**
  * 
  */
-package vendingmachine.service;
+package vendingmachine.dao;
 
 /**
  * @author Flavio Silva
