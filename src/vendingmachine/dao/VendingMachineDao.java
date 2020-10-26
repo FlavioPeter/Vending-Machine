@@ -38,5 +38,5 @@ public interface VendingMachineDao {
 	 * @param code
 	 * @return name of the article that had a unit removed
 	 */
-	Article removeUnit(ArticleCode code) throws VendingMachinePersistenceException;
+	void updateInventory() throws VendingMachinePersistenceException;
 }

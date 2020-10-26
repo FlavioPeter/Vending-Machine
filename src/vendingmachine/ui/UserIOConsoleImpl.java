@@ -7,6 +7,8 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Scanner;
 
+import vendingmachine.dao.ArticleCode;
+
 /**
  * @author Flavio Silva
  *
@@ -156,5 +158,18 @@ public class UserIOConsoleImpl implements UserIO {
 			ans = true;
 		}
 		return ans;
+	}
+	
+	public ArticleCode readArticleCode(String prompt) {
+		ArticleCode ans;
+		print(prompt);
+		String answer = input.nextLine();
+		ans = ArticleCode.valueOf(answer);
+		for (ArticleCode code : ArticleCode.values()) {
+		    if (code == ans) {
+		        return code;
+		    }
+		}
+		return ArticleCode.NONE;
 	}
 }

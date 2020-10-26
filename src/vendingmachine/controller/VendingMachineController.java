@@ -6,6 +6,8 @@ package vendingmachine.controller;
 import java.math.BigDecimal;
 
 import vendingmachine.dao.VendingMachinePersistenceException;
+import vendingmachine.service.VendingMachineNoArticleException;
+import vendingmachine.service.VendingMachineNoSuchArticleException;
 import vendingmachine.service.VendingMachineServiceLayer;
 import vendingmachine.dto.Article;
 import vendingmachine.dao.ArticleCode;
@@ -22,38 +24,32 @@ public class VendingMachineController {
 	
 	private VendingMachineView view;
 	private VendingMachineServiceLayer service;
-	private UserIO io = new UserIOConsoleImpl(); //get rid of this somehow
 	
 	public VendingMachineController(VendingMachineServiceLayer service, VendingMachineView view) {
 		this.service = service;
 		this.view = view;
 	}
 	
-	public void run() {
+	public void run() throws VendingMachineNoSuchArticleException, VendingMachineNoArticleException {
 		boolean keepGoing = true;
+		Article article = null;
 		BigDecimal putMoney = new BigDecimal("0");
-		String articleSelected = null;
 		try {
 			while(keepGoing) {
 				
 				listArticles(); // unmarshall and then list
 				
-				putMoney = getMoney();
+				putMoney = getMoney(); // money put by user
 				
-				buyArticle();
+				article = buyArticle(); // select article based on listArticles()
 				
-				if(true) { // if money put is enough
-					
-					// subtract unit from inventory
-					
-					// give change back
-					io.print("Here is your change..."); // gotta get rid of this somehow
-				}
-				keepGoing = io.readBoolean("Would you like to keep buying?yes/no: "); //later to be added to ServiceLayer
+				boughtArticle(putMoney ,article); // did you buy? was the money enough?
+				
+				keepGoing = buyMore(); // Will you buy more?
 			}
-			exitMessage();
+			exitMessage(); // Good Bye
 		}catch(VendingMachinePersistenceException e) {
-			view.displayErrorMessage(e.getMessage());
+			view.displayErrorMessage(e.getMessage()); // If you get here, something went wrong
 		}
 	}
 	
@@ -67,14 +63,33 @@ public class VendingMachineController {
 		view.displayArticleList(articleList);
 	}
 	
-	private void buyArticle() throws VendingMachinePersistenceException{
+	private Article buyArticle() throws VendingMachinePersistenceException, VendingMachineNoSuchArticleException, VendingMachineNoArticleException{
 		view.articleChosenBanner();
-		ArticleCode code = view.getArticleCode();
+		ArticleCode code = view.getArticleCodeChoice();
 		Article article = service.getArticle(code);
-		view.boughtArticle(article);
+		service.validateThereIsArticle(article);
+		return article;
+	}
+	
+	private void boughtArticle(BigDecimal putMoney, Article article) throws VendingMachinePersistenceException{
+		boolean enough = service.verifyEnoughMoney(putMoney, article);
+		if(enough) { // if money put is enough
+			
+			// subtract unit from inventory
+			String change = service.getChange(putMoney, (new BigDecimal(article.getCost())));// create
+			view.displayChange(change); 
+			String purchasedArticle = service.removeUnit(article);
+			view.youBought(purchasedArticle);
+		} else {
+			view.notEnoughMoney();
+		}
 	}
 	
 	private void exitMessage() {
 		view.displayExitBanner();
+	}
+	
+	private boolean buyMore() {
+		return view.getBuyMore();
 	}
 }

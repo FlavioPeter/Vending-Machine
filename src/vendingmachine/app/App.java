@@ -8,6 +8,8 @@ import vendingmachine.dao.VendingMachineAuditDao;
 import vendingmachine.dao.VendingMachineAuditDaoFileImpl;
 import vendingmachine.dao.VendingMachineDao;
 import vendingmachine.dao.VendingMachineDaoFileImpl;
+import vendingmachine.service.VendingMachineNoArticleException;
+import vendingmachine.service.VendingMachineNoSuchArticleException;
 import vendingmachine.service.VendingMachineServiceLayer;
 import vendingmachine.service.VendingMachineServiceLayerImpl;
 import vendingmachine.ui.UserIO;
@@ -20,7 +22,7 @@ import vendingmachine.ui.VendingMachineView;
  */
 public class App {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws VendingMachineNoSuchArticleException, VendingMachineNoArticleException {
 		// Instantiate the UserIO implementation
 		UserIO myIO = new UserIOConsoleImpl();
 		// Instantiate the View and wire the UserIO implementation into it

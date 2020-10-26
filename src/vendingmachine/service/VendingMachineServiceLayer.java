@@ -3,6 +3,7 @@
  */
 package vendingmachine.service;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import vendingmachine.dao.ArticleCode;
@@ -41,6 +42,13 @@ public interface VendingMachineServiceLayer {
 	 * @param code
 	 * @return name of the article that had a unit removed
 	 */
-	Article removeUnit(ArticleCode code) throws 
-			VendingMachinePersistenceException;
+	String removeUnit(Article article) throws VendingMachinePersistenceException;
+	
+	void validateThereIsArticle(Article article) throws 
+			VendingMachineNoSuchArticleException, 
+			VendingMachineNoArticleException;
+	
+	boolean verifyEnoughMoney(BigDecimal putMoney, Article article);
+	
+	String getChange(BigDecimal putMoney, BigDecimal cost) ;
 }

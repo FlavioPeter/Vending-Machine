@@ -136,15 +136,11 @@ public class VendingMachineDaoFileImpl implements VendingMachineDao {
 	}
 	
 	@Override
-	public Article removeUnit(ArticleCode code) throws VendingMachinePersistenceException{ // goes inside controller.boughtArticle
-		loadArticle();
-		Article subtractedArticle = articles.get(code);
-		subtractedArticle.inventorySubtract();
+	public void updateInventory() throws VendingMachinePersistenceException{ // goes inside controller.boughtArticle
 		try {
 			writeArticle(articles);
 		}catch(IOException e) {
 			throw new VendingMachinePersistenceException("-_- Could not load article data into memory.", e);
 		}
-		return subtractedArticle;
 	}
 }

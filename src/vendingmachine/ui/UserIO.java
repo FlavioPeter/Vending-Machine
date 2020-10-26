@@ -5,6 +5,8 @@ package vendingmachine.ui;
 
 import java.math.BigDecimal;
 
+import vendingmachine.dao.ArticleCode;
+
 /**
  * @author Flavio Silva
  *
@@ -33,4 +35,6 @@ public void print(String msg);
 	public BigDecimal readBigDecimal(String prompt);
 	
 	public boolean readBoolean(String prompt);
+	
+	public ArticleCode readArticleCode(String prompt); 
 }

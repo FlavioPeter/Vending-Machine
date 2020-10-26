@@ -6,8 +6,6 @@ package vendingmachine.ui;
 import java.math.BigDecimal;
 import java.util.List;
 
-import vendingmachine.dao.VendingMachineDao;
-import vendingmachine.dao.VendingMachineDaoFileImpl;
 import vendingmachine.dto.Article;
 import vendingmachine.dao.ArticleCode;
 
@@ -16,8 +14,7 @@ import vendingmachine.dao.ArticleCode;
  *
  */
 public class VendingMachineView {
-	
-	private VendingMachineDao dao = new VendingMachineDaoFileImpl(); //get rid of this some how
+
 	private UserIO io;
 	
 	public VendingMachineView(UserIO io) {
@@ -25,9 +22,7 @@ public class VendingMachineView {
 	}
 	
 	public BigDecimal printMenuAndGetMoney() {
-		io.print("HERES ARE THE ARTICLES UNMARSHALLED FROM TXT FILE"); //displayArticleList
-		
-		return io.readBigDecimal("How much money will you put?: ");
+		return io.readBigDecimal("How much money will you put?: "); // This will go to putMoney
 	}
 	
 	public void vmBanner() { // Display banner before displayArticleList
@@ -52,23 +47,6 @@ public class VendingMachineView {
 		io.print("=== Article Chosen ===");
 	}
 	
-	public ArticleCode getArticleCode() {
-		return ArticleCode.valueOf(io.readString("Please enter the article code (e.g: A1, B3, C2, etc): "));
-	}
-	
-	public void boughtArticle(Article article) {
-		if(article != null) {
-			io.print(article.getName());
-			io.print(article.getCost());
-			io.print(article.getInventory());
-			String name = dao.removeUnit(article); // gotta fix this
-			returnBoughtArticle(name);
-		}else {
-			io.print("No such article...");
-		}
-		io.readString("Please hit enter to continue and order something else.");
-	}
-	
 	public void returnBoughtArticle(String name) {// removeUnit as input // goes inside controller.boughtArticle
 		io.print("You bought "+name);
 	}
@@ -80,5 +58,25 @@ public class VendingMachineView {
 	public void displayErrorMessage(String errorMsg) {
 		io.print("=== ERROR ===");
 		io.print(errorMsg);
+	}
+	
+	public boolean getBuyMore() {
+		return io.readBoolean("Would you like to keep buying?yes/no: ");
+	}
+	
+	public ArticleCode getArticleCodeChoice() {
+		return io.readArticleCode("Which article would you like based on the code?: ");
+	}
+	
+	public void notEnoughMoney() {
+		io.print("Sorry, but you didn't put enough money.");
+	}
+	
+	public void displayChange(String change) {
+		io.print("Here is your change: "+change);
+	}
+	
+	public void youBought(String purchasedArticle) {
+		io.print("You bought: "+purchasedArticle);
 	}
 }
