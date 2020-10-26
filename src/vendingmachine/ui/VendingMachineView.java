@@ -57,7 +57,7 @@ public class VendingMachineView {
 	
 	public void displayErrorMessage(String errorMsg) {
 		io.print("=== ERROR ===");
-		io.print(errorMsg);
+		io.readString(errorMsg);
 	}
 	
 	public boolean getBuyMore() {
@@ -77,6 +77,10 @@ public class VendingMachineView {
 	}
 	
 	public void youBought(String purchasedArticle) {
-		io.print("You bought: "+purchasedArticle);
+		io.readString("You bought: "+purchasedArticle+". \nPress enter to continue...");
+	}
+	
+	public void errorMessage() {
+		io.readString("You typed an invalid code. Please press enter to restart...");
 	}
 }

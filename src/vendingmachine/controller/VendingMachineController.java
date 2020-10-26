@@ -45,13 +45,13 @@ public class VendingMachineController {
 					
 					keepGoing = buyMore(); // Will you buy more?
 				} catch(VendingMachineNoSuchArticleException | VendingMachineNoArticleException e) {
-					System.out.println("Errorrrrr");
+					promptError(e);
 				}
 				
 			}
 			exitMessage(); // Good Bye
 		}catch(VendingMachinePersistenceException e) {
-			view.displayErrorMessage(e.getMessage()); // If you get here, something went wrong
+			promptError(e); // If you get here, something went wrong
 		}
 	}
 	
@@ -66,7 +66,6 @@ public class VendingMachineController {
 	}
 	
 	private Article buyArticle() throws VendingMachinePersistenceException, VendingMachineNoSuchArticleException, VendingMachineNoArticleException{
-		view.articleChosenBanner();
 		ArticleCode code = view.getArticleCodeChoice();
 		Article article = service.getArticle(code);
 		service.validateThereIsArticle(article);
@@ -81,6 +80,7 @@ public class VendingMachineController {
 			String change = service.getChange(putMoney, (new BigDecimal(article.getCost())));// create
 			view.displayChange(change); 
 			String purchasedArticle = service.removeUnit(article);
+			view.articleChosenBanner();
 			view.youBought(purchasedArticle);
 		} else {
 			view.notEnoughMoney();
@@ -93,5 +93,9 @@ public class VendingMachineController {
 	
 	private boolean buyMore() {
 		return view.getBuyMore();
+	}
+	
+	private void promptError(Exception e) {
+		view.displayErrorMessage(e.getMessage());
 	}
 }

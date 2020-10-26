@@ -19,7 +19,7 @@ public class VendingMachineDaoStubImpl implements VendingMachineDao {
 	public Article onlyArticle;
 
     public VendingMachineDaoStubImpl(Article onlyArticle){
-         onlyArticle = new Article("test", new BigDecimal("1.25"), 5);
+         this.onlyArticle = new Article("test", new BigDecimal("1.25"), 5);
      }
 
     @Override

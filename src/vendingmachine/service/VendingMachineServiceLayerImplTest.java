@@ -8,9 +8,6 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.math.BigDecimal;
 import java.util.List;
 
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -30,10 +27,11 @@ class VendingMachineServiceLayerImplTest {
 
 
 	private VendingMachineServiceLayer service;
-
+	
 	public Article onlyArticle;
 	
-	public VendingMachineServiceLayerImplTest() {
+	@BeforeEach
+	public void constructTest() {
 		VendingMachineDao dao = new VendingMachineDaoStubImpl(onlyArticle);
 	    VendingMachineAuditDao auditDao = new VendingMachineAuditDaoStubImpl();
 
@@ -43,19 +41,18 @@ class VendingMachineServiceLayerImplTest {
 	@Test
 	void testSubtractedAndAudit() throws VendingMachinePersistenceException {
 		List<Article> myList = service.getAllArticles();
+		System.out.println(myList.get(0).getName());
 		Article onlyArticle = service.getArticle(ArticleCode.A1);
+		System.out.println(onlyArticle.getName());
 		
 		int before = Integer.parseInt(onlyArticle.getInventory());
-		System.out.println(before);
 		String name = service.removeUnit(onlyArticle);
 		int after = Integer.parseInt(onlyArticle.getInventory());
-		System.out.println(after);
 		
-		assertTrue((before-1)==after);
+		assertEquals((before-1), after);
 		assertTrue(name.equals("test"));
-		assertTrue(myList.get(0).getName() == onlyArticle.getName());
+		assertTrue((myList.get(0).getName()).equals(onlyArticle.getName()));
 		assertTrue(myList.get(0).getCost() == onlyArticle.getCost());
-		assertTrue(myList.get(0).getInventory() == onlyArticle.getInventory());
 	}
 	
 	@Test
@@ -71,11 +68,11 @@ class VendingMachineServiceLayerImplTest {
 		
 		BigDecimal cost = new BigDecimal(onlyArticle.getCost());
 		
-		String change = service.getChange(putMoney1, cost);
+		String change = service.getChange(putMoney2, cost);
 		
 		assertFalse(enough1);
 		assertTrue(enough2);
-		assertTrue(change.equals(" One Dollars: 1 Quarters: 3 Pennys: 1."));
+		assertTrue(change.equals(" One Dollars: "+"1"+" Quarters: "+"3"+" Pennys: "+"1"+"."));
 	}
 
 }

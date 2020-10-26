@@ -1,3 +1,7 @@
 2020-10-26T07:56:45.528180100 : Article ArticleD was purchased
 2020-10-26T08:07:40.572956700 : Article ArticleD was purchased
 2020-10-26T08:08:05.034353200 : Article ArticleD was purchased
+2020-10-26T14:24:01.497582900 : Article ArticleD was purchased
+2020-10-26T16:24:50.722849600 : Article ChewingGum was purchased
+2020-10-26T17:05:20.584339300 : Article Pepsi was purchased
+2020-10-26T17:07:00.246627300 : Article ArticleD was purchased

@@ -1,12 +1,12 @@
-Pepsi::1.00::1
+Pepsi::1.00::0
 Coke::1.00::10
 Fanta::0.75::10
 Oreo::5.00::5
 Cookie::1.50::20
 KitKat::1.00::15
-ChewingGum::1.25::50
+ChewingGum::1.25::49
 Chips::2.25::15
 ArticleA::1.00::5
 ArticleB::1.50::10
 ArticleC::1.75::15
-ArticleD::2.25::22
+ArticleD::2.25::20
