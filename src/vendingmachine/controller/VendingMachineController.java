@@ -11,8 +11,6 @@ import vendingmachine.service.VendingMachineNoSuchArticleException;
 import vendingmachine.service.VendingMachineServiceLayer;
 import vendingmachine.dto.Article;
 import vendingmachine.dao.ArticleCode;
-import vendingmachine.ui.UserIO;
-import vendingmachine.ui.UserIOConsoleImpl;
 import vendingmachine.ui.VendingMachineView;
 import java.util.List;
 
@@ -30,22 +28,26 @@ public class VendingMachineController {
 		this.view = view;
 	}
 	
-	public void run() throws VendingMachineNoSuchArticleException, VendingMachineNoArticleException {
+	public void run() {
 		boolean keepGoing = true;
 		Article article = null;
 		BigDecimal putMoney = new BigDecimal("0");
 		try {
 			while(keepGoing) {
+				try {
+					listArticles(); // unmarshall and then list
+					
+					putMoney = getMoney(); // money put by user
+					
+					article = buyArticle(); // select article based on listArticles()
+					
+					boughtArticle(putMoney ,article); // did you buy? was the money enough?
+					
+					keepGoing = buyMore(); // Will you buy more?
+				} catch(VendingMachineNoSuchArticleException | VendingMachineNoArticleException e) {
+					System.out.println("Errorrrrr");
+				}
 				
-				listArticles(); // unmarshall and then list
-				
-				putMoney = getMoney(); // money put by user
-				
-				article = buyArticle(); // select article based on listArticles()
-				
-				boughtArticle(putMoney ,article); // did you buy? was the money enough?
-				
-				keepGoing = buyMore(); // Will you buy more?
 			}
 			exitMessage(); // Good Bye
 		}catch(VendingMachinePersistenceException e) {

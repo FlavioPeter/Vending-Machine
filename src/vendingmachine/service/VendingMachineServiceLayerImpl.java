@@ -74,10 +74,11 @@ public class VendingMachineServiceLayerImpl implements VendingMachineServiceLaye
 		BigDecimal oneDollarChange = remain.divide(oneDollar, 0, RoundingMode.DOWN);
 		
 		BigDecimal quarter = new BigDecimal("0.25").setScale(2);
-		remain = remain.subtract(oneDollarChange.multiply(quarter)).setScale(2, RoundingMode.HALF_UP);
+		remain = remain.subtract(oneDollarChange.multiply(oneDollar)).setScale(2, RoundingMode.HALF_UP);
 		BigDecimal quarterChange = remain.divide(quarter, 0, RoundingMode.DOWN);
 		
 		BigDecimal penny = new BigDecimal("0.01").setScale(2);
+		remain = remain.subtract(quarterChange.multiply(quarter)).setScale(2, RoundingMode.HALF_UP);
 		BigDecimal pennyChange = remain.divide(penny, 0, RoundingMode.DOWN);
 		
 		String change = " One Dollars: "+oneDollarChange.toString()+" Quarters: "+quarterChange.toString()+" Pennys: "+pennyChange.toString()+".";

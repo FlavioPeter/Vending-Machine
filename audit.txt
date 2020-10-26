@@ -1,0 +1,3 @@
+2020-10-26T07:56:45.528180100 : Article ArticleD was purchased
+2020-10-26T08:07:40.572956700 : Article ArticleD was purchased
+2020-10-26T08:08:05.034353200 : Article ArticleD was purchased

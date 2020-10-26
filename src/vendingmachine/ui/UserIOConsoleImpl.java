@@ -164,12 +164,17 @@ public class UserIOConsoleImpl implements UserIO {
 		ArticleCode ans;
 		print(prompt);
 		String answer = input.nextLine();
-		ans = ArticleCode.valueOf(answer);
-		for (ArticleCode code : ArticleCode.values()) {
-		    if (code == ans) {
-		        return code;
-		    }
+		try {
+			ans = ArticleCode.valueOf(answer);
+			for (ArticleCode code : ArticleCode.values()) {
+			    if (code == ans) {
+			        return code;
+			    }
+		}
+		}catch(Exception e) {
+			print("Error");
 		}
 		return ArticleCode.NONE;
+		
 	}
 }

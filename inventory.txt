@@ -9,4 +9,4 @@ Chips::2.25::15
 ArticleA::1.00::5
 ArticleB::1.50::10
 ArticleC::1.75::15
-ArticleD::2.25::25
+ArticleD::2.25::22

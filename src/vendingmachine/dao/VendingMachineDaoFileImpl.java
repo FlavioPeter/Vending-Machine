@@ -136,7 +136,7 @@ public class VendingMachineDaoFileImpl implements VendingMachineDao {
 	}
 	
 	@Override
-	public void updateInventory() throws VendingMachinePersistenceException{ // goes inside controller.boughtArticle
+	public void updateInventory() throws VendingMachinePersistenceException{
 		try {
 			writeArticle(articles);
 		}catch(IOException e) {
