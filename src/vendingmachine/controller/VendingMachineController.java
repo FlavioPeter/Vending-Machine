@@ -8,6 +8,7 @@ import java.math.BigDecimal;
 import vendingmachine.dao.VendingMachinePersistenceException;
 import vendingmachine.service.VendingMachineNoArticleException;
 import vendingmachine.service.VendingMachineNoSuchArticleException;
+import vendingmachine.service.VendingMachineNotEnoughMoneyException;
 import vendingmachine.service.VendingMachineServiceLayer;
 import vendingmachine.dto.Article;
 import vendingmachine.dao.ArticleCode;
@@ -44,7 +45,7 @@ public class VendingMachineController {
 					boughtArticle(putMoney ,article); // did you buy? was the money enough?
 					
 					keepGoing = buyMore(); // Will you buy more?
-				} catch(VendingMachineNoSuchArticleException | VendingMachineNoArticleException e) {
+				} catch(VendingMachineNoSuchArticleException | VendingMachineNoArticleException |VendingMachineNotEnoughMoneyException e) {
 					promptError(e);
 				}
 				
@@ -72,19 +73,14 @@ public class VendingMachineController {
 		return article;
 	}
 	
-	private void boughtArticle(BigDecimal putMoney, Article article) throws VendingMachinePersistenceException{
-		boolean enough = service.verifyEnoughMoney(putMoney, article);
-		if(enough) { // if money put is enough
-			
-			// subtract unit from inventory
-			String change = service.getChange(putMoney, (new BigDecimal(article.getCost())));// create
-			view.displayChange(change); 
-			String purchasedArticle = service.removeUnit(article);
-			view.articleChosenBanner();
-			view.youBought(purchasedArticle);
-		} else {
-			view.notEnoughMoney();
-		}
+	private void boughtArticle(BigDecimal putMoney, Article article) throws VendingMachinePersistenceException, VendingMachineNotEnoughMoneyException{
+		service.verifyEnoughMoney(putMoney, article);	
+		// subtract unit from inventory
+		String change = service.getChange(putMoney, (new BigDecimal(article.getCost())));// create
+		view.displayChange(change); 
+		String purchasedArticle = service.removeUnit(article);
+		view.articleChosenBanner();
+		view.youBought(purchasedArticle);
 	}
 	
 	private void exitMessage() {

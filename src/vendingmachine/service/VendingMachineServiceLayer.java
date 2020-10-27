@@ -48,7 +48,7 @@ public interface VendingMachineServiceLayer {
 			VendingMachineNoSuchArticleException, 
 			VendingMachineNoArticleException;
 	
-	boolean verifyEnoughMoney(BigDecimal putMoney, Article article);
+	void verifyEnoughMoney(BigDecimal putMoney, Article article) throws VendingMachineNotEnoughMoneyException;
 	
 	String getChange(BigDecimal putMoney, BigDecimal cost) ;
 }

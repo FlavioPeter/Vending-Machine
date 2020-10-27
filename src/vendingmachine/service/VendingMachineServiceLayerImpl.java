@@ -60,11 +60,10 @@ public class VendingMachineServiceLayerImpl implements VendingMachineServiceLaye
 		}
 	}
 	
-	public boolean verifyEnoughMoney(BigDecimal putMoney, Article article){
+	public void verifyEnoughMoney(BigDecimal putMoney, Article article) throws VendingMachineNotEnoughMoneyException{
 		if(putMoney.compareTo(new BigDecimal(article.getCost())) >= 0) {
-			return true;
 		}else {
-			return false;
+			throw new VendingMachineNotEnoughMoneyException("ERROR: Not enough money put.");
 		}
 	}
 	
@@ -77,11 +76,19 @@ public class VendingMachineServiceLayerImpl implements VendingMachineServiceLaye
 		remain = remain.subtract(oneDollarChange.multiply(oneDollar)).setScale(2, RoundingMode.HALF_UP);
 		BigDecimal quarterChange = remain.divide(quarter, 0, RoundingMode.DOWN);
 		
-		BigDecimal penny = new BigDecimal("0.01").setScale(2);
+		BigDecimal dime = new BigDecimal("0.10").setScale(2);
 		remain = remain.subtract(quarterChange.multiply(quarter)).setScale(2, RoundingMode.HALF_UP);
+		BigDecimal dimeChange = remain.divide(dime, 0, RoundingMode.DOWN);
+		
+		BigDecimal nickel = new BigDecimal("0.05").setScale(2);
+		remain = remain.subtract(dimeChange.multiply(dime)).setScale(2, RoundingMode.HALF_UP);
+		BigDecimal nickelChange = remain.divide(nickel, 0, RoundingMode.DOWN);
+		
+		BigDecimal penny = new BigDecimal("0.01").setScale(2);
+		remain = remain.subtract(nickelChange.multiply(nickel)).setScale(2, RoundingMode.HALF_UP);
 		BigDecimal pennyChange = remain.divide(penny, 0, RoundingMode.DOWN);
 		
-		String change = " One Dollars: "+oneDollarChange.toString()+" Quarters: "+quarterChange.toString()+" Pennys: "+pennyChange.toString()+".";
+		String change = " One Dollars: "+oneDollarChange.toString()+" Quarters: "+quarterChange.toString()+" Dimes: "+dimeChange.toString()+" Nickels: "+nickelChange.toString()+" Pennys: "+pennyChange.toString()+".";
 		return change;
 	}
 }

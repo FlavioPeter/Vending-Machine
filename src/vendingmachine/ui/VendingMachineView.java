@@ -68,10 +68,6 @@ public class VendingMachineView {
 		return io.readArticleCode("Which article would you like based on the code?: ");
 	}
 	
-	public void notEnoughMoney() {
-		io.print("Sorry, but you didn't put enough money.");
-	}
-	
 	public void displayChange(String change) {
 		io.print("Here is your change: "+change);
 	}
