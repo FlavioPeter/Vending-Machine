@@ -10,6 +10,7 @@ import java.math.RoundingMode;
  * @author Flavio Silva
  *
  */
+
 public class Article {
 	
 	private String name;

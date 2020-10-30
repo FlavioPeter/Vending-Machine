@@ -15,15 +15,20 @@ import vendingmachine.dao.ArticleCode;
 import vendingmachine.ui.VendingMachineView;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 /**
  * @author Flavio Silva
  *
  */
+@Component
 public class VendingMachineController {
 	
 	private VendingMachineView view;
 	private VendingMachineServiceLayer service;
 	
+	@Autowired
 	public VendingMachineController(VendingMachineServiceLayer service, VendingMachineView view) {
 		this.service = service;
 		this.view = view;

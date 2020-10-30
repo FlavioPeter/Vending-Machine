@@ -7,12 +7,15 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Scanner;
 
+import org.springframework.stereotype.Component;
+
 import vendingmachine.dao.ArticleCode;
 
 /**
  * @author Flavio Silva
  *
  */
+@Component
 public class UserIOConsoleImpl implements UserIO {
 	
 	private static Scanner input = new Scanner(System.in); 

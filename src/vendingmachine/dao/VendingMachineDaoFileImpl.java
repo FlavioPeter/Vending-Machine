@@ -16,14 +16,18 @@ import java.util.Map;
 import java.util.Scanner;
 import java.util.TreeMap;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import vendingmachine.dto.Article;
 
 /**
  * @author Flavio Silva
  *
  */
+@Component
 public class VendingMachineDaoFileImpl implements VendingMachineDao {
-	
+
 	public static final String INVENTORY_FILE = "inventory.txt";
 	public static final String DELIMITER = "::";
 	

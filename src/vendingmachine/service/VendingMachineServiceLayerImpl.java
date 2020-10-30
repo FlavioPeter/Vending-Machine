@@ -2,11 +2,13 @@
  * 
  */
 package vendingmachine.service;
-
+import org.springframework.beans.factory.annotation.Autowired;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.springframework.stereotype.Component;
 
 import vendingmachine.dao.ArticleCode;
 import vendingmachine.dao.VendingMachineAuditDao;
@@ -18,11 +20,13 @@ import vendingmachine.dto.Article;
  * @author Flavio Silva
  *
  */
+@Component
 public class VendingMachineServiceLayerImpl implements VendingMachineServiceLayer {
 	
 	VendingMachineDao dao;
 	VendingMachineAuditDao auditDao;
 	
+	@Autowired
 	public VendingMachineServiceLayerImpl(VendingMachineDao dao, VendingMachineAuditDao auditDao) {
 		this.dao = dao;
 		this.auditDao = auditDao;

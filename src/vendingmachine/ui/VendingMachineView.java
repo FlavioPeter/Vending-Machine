@@ -6,6 +6,9 @@ package vendingmachine.ui;
 import java.math.BigDecimal;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import vendingmachine.dto.Article;
 import vendingmachine.dao.ArticleCode;
 
@@ -13,10 +16,12 @@ import vendingmachine.dao.ArticleCode;
  * @author Flavio Silva
  *
  */
+@Component
 public class VendingMachineView {
 
 	private UserIO io;
 	
+	@Autowired
 	public VendingMachineView(UserIO io) {
 		this.io = io;
 	}

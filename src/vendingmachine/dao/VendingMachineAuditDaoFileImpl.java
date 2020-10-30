@@ -8,10 +8,14 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.time.LocalDateTime;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 /**
  * @author Flavio Silva
  *
  */
+@Component
 public class VendingMachineAuditDaoFileImpl implements VendingMachineAuditDao {
 
 	public static final String AUDIT_FILE = "audit.txt";

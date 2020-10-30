@@ -1,20 +1,13 @@
 /**
  * 
  */
-package vendingmachine.app;
+package vendingmachine;
+
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import vendingmachine.controller.VendingMachineController;
-import vendingmachine.dao.VendingMachineAuditDao;
-import vendingmachine.dao.VendingMachineAuditDaoFileImpl;
-import vendingmachine.dao.VendingMachineDao;
-import vendingmachine.dao.VendingMachineDaoFileImpl;
 import vendingmachine.service.VendingMachineNoArticleException;
 import vendingmachine.service.VendingMachineNoSuchArticleException;
-import vendingmachine.service.VendingMachineServiceLayer;
-import vendingmachine.service.VendingMachineServiceLayerImpl;
-import vendingmachine.ui.UserIO;
-import vendingmachine.ui.UserIOConsoleImpl;
-import vendingmachine.ui.VendingMachineView;
 
 /**
  * @author Flavio Silva
@@ -22,7 +15,11 @@ import vendingmachine.ui.VendingMachineView;
  */
 public class App {
 
+	/**
+	 * @param args
+	 */
 	public static void main(String[] args) throws VendingMachineNoSuchArticleException, VendingMachineNoArticleException {
+		/*
 		// Instantiate the UserIO implementation
 		UserIO myIO = new UserIOConsoleImpl();
 		// Instantiate the View and wire the UserIO implementation into it
@@ -37,6 +34,17 @@ public class App {
 		VendingMachineController controller = new VendingMachineController(myService, myView);
 		// Kick off the controller
 		controller.run();
+		*/
+		
+
+		AnnotationConfigApplicationContext appContext = new AnnotationConfigApplicationContext();
+        appContext.scan("vendingmachine");
+        //System.out.println(appContext);
+        
+        appContext.refresh();
+	        
+	    VendingMachineController controller = appContext.getBean("vendingMachineController", VendingMachineController.class);
+	    controller.run();
 	}
 
 }
